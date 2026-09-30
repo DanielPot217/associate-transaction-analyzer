@@ -15,7 +15,7 @@ public class Account{
     private boolean overdrawn;
 
     Account(String accountId){
-        this.accountId = accountId;
+        this.accountId = accountId.toUpperCase().strip();
         this.totalCredits = 0;
         this.totalDebits = 0;
         this.endingBalance = 0;
@@ -53,7 +53,7 @@ public class Account{
 
         this.overdrawn = this.endingBalance < 0;
 
-        System.out.printf("Account %s Updated with new transaction!", this.accountId);
+        System.out.printf("Account %s Updated with new transaction!\n", this.accountId);
     }
 
     public Map<String, Object> getSummary() {
