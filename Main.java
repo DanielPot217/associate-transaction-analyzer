@@ -1,3 +1,5 @@
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import java.util.List;
 import java.util.Map;
 
@@ -13,6 +15,7 @@ public class Main {
 
         Map<String, Object> results = TransactionAnalyzer.analyze(transactions);
 
-        System.out.println(results.toString());
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        System.out.println(gson.toJson(results));
     }
 }
