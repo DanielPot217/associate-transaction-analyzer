@@ -1,15 +1,18 @@
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import java.util.Arrays;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 
 class TransactionAnalyzerTest {
 
-    // Example from the specification
+    // Example from the specification, validate final output
 
     @Test
     void exampleInputProducesExpectedOutput() {
@@ -83,6 +86,29 @@ class TransactionAnalyzerTest {
         assertTrue(results.getAsJsonArray("summaries").isEmpty());
     }
 
+    // Null input
+
+    @Test
+    void nullTransactionListIsTreatedAsEmpty() {
+        JsonObject results = TransactionAnalyzer.analyze(null);
+
+        assertTrue(results.getAsJsonArray("summaries").isEmpty());
+        assertEquals("", results.get("topSpender").getAsString());
+    }
+
+    @Test
+    void nullTransactionsInListAreSkipped() {
+        JsonObject results = TransactionAnalyzer.analyze(Arrays.asList(
+            null,
+            new Transaction("A100", "credit", 100, "2026-05-10T10:00:00Z"),
+            null
+        ));
+
+        JsonArray summaries = results.getAsJsonArray("summaries");
+        assertEquals(1, summaries.size());
+        assertEquals(1, summaries.get(0).getAsJsonObject().get("transactionCount").getAsInt());
+    }
+
     @Test
     void invalidTransactionsDoNotAffectValidOnesForSameAccount() {
         JsonObject results = TransactionAnalyzer.analyze(List.of(
@@ -96,6 +122,24 @@ class TransactionAnalyzerTest {
         assertEquals(100, summary.get("endingBalance").getAsInt());
         assertEquals(100, summary.get("largestTransaction").getAsInt());
     }
+
+    // Large amounts
+
+    @Test
+    void hugeAmountsDoNotOverflow() {
+        JsonObject results = TransactionAnalyzer.analyze(List.of(
+            new Transaction("A100", "credit", 2000000000, "2026-05-10T10:00:00Z"),
+            new Transaction("A100", "credit", 2000000000, "2026-05-10T11:00:00Z"),
+            new Transaction("A100", "debit", 1, "2026-05-10T12:00:00Z")
+        ));
+
+        JsonObject summary = results.getAsJsonArray("summaries").get(0).getAsJsonObject();
+
+        assertEquals(4000000000L, summary.get("totalCredits").getAsLong());
+        assertEquals(3999999999L, summary.get("endingBalance").getAsLong());
+        assertFalse(summary.get("overdrawn").getAsBoolean());
+    }
+
 
     // Ordering
     @Test

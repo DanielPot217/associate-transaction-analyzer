@@ -13,9 +13,10 @@ public class Main {
             new Transaction("", "credit", 100, "2026-05-10T14:00:00Z")
         );
 
+        // Gson used to prettyPrint the results into the output
         JsonObject results = TransactionAnalyzer.analyze(transactions);
-
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
+
         System.out.println(gson.toJson(results));
     }
 }

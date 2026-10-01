@@ -1,10 +1,10 @@
 public class Transaction {
     private final String accountId;
     private final String type;
-    private final int amount;
+    private final long amount;
     private final String timestamp;
 
-    public Transaction(String accountId, String type, int amount, String timestamp) {
+    public Transaction(String accountId, String type, long amount, String timestamp) {
         this.accountId = accountId == null ? null : accountId.toUpperCase().strip();
         this.type = type == null ? null : type.toLowerCase().strip();
         this.amount = amount;
@@ -19,7 +19,7 @@ public class Transaction {
         return type;
     }
 
-    public int getAmount() {
+    public long getAmount() {
         return amount;
     }
 

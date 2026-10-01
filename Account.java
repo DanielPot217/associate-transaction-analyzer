@@ -1,16 +1,13 @@
-
 import java.util.LinkedHashMap;
 import java.util.Map;
-
-
 
 public class Account{
 
     private final String accountId;
-    private int totalCredits;
-    private int totalDebits;
-    private int endingBalance;
-    private int largestTransaction;
+    private long totalCredits;
+    private long totalDebits;
+    private long endingBalance;
+    private long largestTransaction;
     private int transactionCount;
     private boolean overdrawn;
 
@@ -28,22 +25,21 @@ public class Account{
         return this.accountId;
     }
 
-    public int getTotalDebits(){
+    public long getTotalDebits(){
         return this.totalDebits;
     }
 
 
+    public void updateAccount(String type, long amount){
 
-    public void updateAccount(String type, int amount){
-        
         if(type.equals("credit")){
             this.totalCredits += amount;
-        } 
-        else{
+        }
+        else if(type.equals("debit")){
             this.totalDebits += amount;
         }
 
-        this.endingBalance = (this.totalCredits - this.totalDebits);
+        this.endingBalance = Math.subtractExact(this.totalCredits, this.totalDebits);
 
         if(amount > this.largestTransaction){
             this.largestTransaction = amount;
@@ -67,5 +63,4 @@ public class Account{
         summary.put("overdrawn", overdrawn);
         return summary;
     }
-
 }
