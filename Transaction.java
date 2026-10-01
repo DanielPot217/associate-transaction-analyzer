@@ -5,8 +5,8 @@ public class Transaction {
     private final String timestamp;
 
     public Transaction(String accountId, String type, int amount, String timestamp) {
-        this.accountId = accountId.toUpperCase().strip();
-        this.type = type.toLowerCase().strip();
+        this.accountId = accountId == null ? null : accountId.toUpperCase().strip();
+        this.type = type == null ? null : type.toLowerCase().strip();
         this.amount = amount;
         this.timestamp = timestamp;
     }
