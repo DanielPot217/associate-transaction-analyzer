@@ -22,8 +22,4 @@ public class Transaction {
     public long getAmount() {
         return amount;
     }
-
-    public String getTimestamp() {
-        return timestamp;
-    }
 }

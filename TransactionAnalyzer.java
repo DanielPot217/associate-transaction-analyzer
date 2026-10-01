@@ -27,7 +27,7 @@ public class TransactionAnalyzer {
             long amount = transaction.getAmount();
             String type = transaction.getType();
 
-            // Input Validation, checks for an invalid fields, skips if found
+            // Input Validation, checks for any invalid fields, skips if found
             if (accountId == null || accountId.isBlank()) {
                 System.out.println("\nSkipping transaction with invalid account ID, cannot be empty.\n");
                 continue;
@@ -42,7 +42,7 @@ public class TransactionAnalyzer {
             }
 
 
-            // Updates Account based on AccountId from Tranasction, will create a new account if no account found 
+            // Updates Account based on AccountId from the transaction, will create a new account if no account found 
             Account account = accounts.get(accountId);
 
             if (account == null) {
@@ -55,7 +55,7 @@ public class TransactionAnalyzer {
 
 
         // Creates ArrayList of summaries to add to results, based on account information
-        // Sorts the summaries list by AccountId to get alphabetically sorted list
+        // Sorts the list by AccountId to get an alphabetically sorted list
         List<Map<String, Object>> summaries = new ArrayList<>();
         for (Account account : accounts.values()) {
             summaries.add(account.getSummary());
