@@ -1,7 +1,7 @@
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
 import java.util.List;
-import java.util.Map;
 
 public class Main {
     public static void main(String[] args) {
@@ -13,7 +13,7 @@ public class Main {
             new Transaction("", "credit", 100, "2026-05-10T14:00:00Z")
         );
 
-        Map<String, Object> results = TransactionAnalyzer.analyze(transactions);
+        JsonObject results = TransactionAnalyzer.analyze(transactions);
 
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         System.out.println(gson.toJson(results));

@@ -1,3 +1,5 @@
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
@@ -6,7 +8,7 @@ import java.util.Map;
 
 public class TransactionAnalyzer {
 
-    public static Map<String, Object> analyze(List<Transaction> transactions) {
+    public static JsonObject analyze(List<Transaction> transactions) {
         Map<String, Account> accounts = new LinkedHashMap<>();
 
         for (Transaction transaction : transactions) {
@@ -64,7 +66,7 @@ public class TransactionAnalyzer {
         Map<String, Object> results = new LinkedHashMap<>();
         results.put("summaries", summaries);
         results.put("topSpender", topSpender);
-        
-        return results;
+
+        return new Gson().toJsonTree(results).getAsJsonObject();
     }
 }
